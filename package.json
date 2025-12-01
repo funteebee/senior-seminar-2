@@ -1,9 +1,10 @@
 {
-  "name": "senior-seminar-2",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "test": "npx hardhat test"
+    "name": "senior-seminar-2",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+      "test": "npx hardhat test"
+    }
   }
-}
+  
