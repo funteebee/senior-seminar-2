@@ -13,6 +13,7 @@ contract DiplomaRegistry {
         string degreeType;       // e.g. "Bachelor's", "Master's"
         uint16 graduationYear;
         bool revoked;
+        bytes32 diplomaHash;     // hash of the off-chain diploma document
     }
 
     // simple auto-increment ID, 0, 1, 2, ...
@@ -25,7 +26,8 @@ contract DiplomaRegistry {
         string studentId,
         string program,
         string degreeType,
-        uint16 graduationYear
+        uint16 graduationYear,
+        bytes32 diplomaHash
     );
 
     event DiplomaRevoked(uint256 indexed diplomaId);
@@ -40,12 +42,14 @@ contract DiplomaRegistry {
     }
 
     /// @notice Issue a new diploma
+    /// @param diplomaHash keccak256 hash of the diploma PDF/JSON stored off-chain
     function issueDiploma(
         address studentWallet,
         string calldata studentId,
         string calldata program,
         string calldata degreeType,
-        uint16 graduationYear
+        uint16 graduationYear,
+        bytes32 diplomaHash
     ) external onlyOwner returns (uint256 diplomaId) {
         diplomaId = nextDiplomaId;
 
@@ -55,7 +59,8 @@ contract DiplomaRegistry {
             program: program,
             degreeType: degreeType,
             graduationYear: graduationYear,
-            revoked: false
+            revoked: false,
+            diplomaHash: diplomaHash
         });
 
         nextDiplomaId += 1;
@@ -66,7 +71,8 @@ contract DiplomaRegistry {
             studentId,
             program,
             degreeType,
-            graduationYear
+            graduationYear,
+            diplomaHash
         );
     }
 
@@ -89,7 +95,8 @@ contract DiplomaRegistry {
             string memory program,
             string memory degreeType,
             uint16 graduationYear,
-            bool revoked
+            bool revoked,
+            bytes32 diplomaHash
         )
     {
         require(diplomaId < nextDiplomaId, "Invalid diplomaId");
@@ -101,7 +108,8 @@ contract DiplomaRegistry {
             d.program,
             d.degreeType,
             d.graduationYear,
-            d.revoked
+            d.revoked,
+            d.diplomaHash
         );
     }
 }
